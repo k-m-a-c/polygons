@@ -5,8 +5,6 @@
   <title>D3 Test</title>
   <script type="text/javascript" src="d3/d3.v3.js"></script>
   <script src="jquery-2.1.4.min.js"></script>
-  <script src="raphael-min.js"></script>
-  <script src="kartograph.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -15,8 +13,6 @@
 
     var width = 500;
     var height = 500;
-
-    var path = d3.geo.path()
 
     var svg = d3.select("body")
       .append("svg")
@@ -27,14 +23,19 @@
     d3.json("don-valley-west.json", function(error, json) {
       if (error) throw (error);
 
-      svg.selectAll("path")
+      var group = svg.selectAll('g')
         .data(json.features)
         .enter()
-        .append("path")
-        .attr("data", path)
-        .attr("stroke", "black")
-        .attr("stroke-width", "5px")
-        .attr("fill-opacity", 1);
+        .append("g")
+
+      var projection = d3.geo.mercator().scale(100000).translate([20000, 85000]);
+
+      var path = d3.geo.path().projection(projection);
+
+      var areas = group.append("path")
+        .attr("d", path)
+        .attr("class", "area")
+        .attr("fill", "black")
     });
 
   </script>
