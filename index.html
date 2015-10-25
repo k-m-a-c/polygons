@@ -4,38 +4,50 @@
   <meta charset="UTF-8">
   <title>D3 Test</title>
   <script type="text/javascript" src="d3/d3.v3.js"></script>
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="http://d3js.org/d3.geo.projection.v0.min.js"></script>
+
   <script src="jquery-2.1.4.min.js"></script>
-  <script src="raphael-min.js"></script>
-  <script src="kartograph.js"></script>
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <script type="text/javascript">
 
-    var width = 500;
-    var height = 500;
+ $(document).on('ready', function(){
 
-    var path = d3.geo.path()
+  var width = 1000,
+      height = 500;
 
-    var svg = d3.select("body")
-      .append("svg")
-      .attr("class", "full-width")
-      .attr("width", width + "px")
-      .attr("height", height + "px");
+  var projection = d3.geo.conicEqualArea()
+      .scale(height * 1000)
+      .center([ -79.492597599808676, 43.65966790323553]);
 
-    d3.json("don-valley-west.json", function(error, json) {
-      if (error) throw (error);
+  var path = d3.geo.path()
+      .projection(projection);
 
-      svg.selectAll("path")
-        .data(json.features)
-        .enter()
-        .append("path")
-        .attr("data", path)
-        .attr("stroke", "black")
-        .attr("stroke-width", "5px")
-        .attr("fill-opacity", 1);
-    });
+  var svg = d3.select("body").append("svg")
+      .attr("width", width)
+      .attr("height", height);
+
+  var features = svg.append("g")
+      .attr("class","features");
+
+  d3.json("Runnymede-Bloor-West.geojson", function(error,geodata) {
+    if (error) return console.log(error);
+
+    features.selectAll("path")
+      .data(geodata.features)
+      .enter()
+      .append("path")
+      .attr("d",path);
+
+  });
+
+
+});
+
 
   </script>
 
