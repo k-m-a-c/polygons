@@ -6,6 +6,18 @@
   margin-right: 2px;
 }
 
-.full-width {
-  display: block;
+path {
+  stroke: white;
+  stroke-width: 0.25px;
+  fill: black;
+}
+
+.stroke {
+  fill: none;
+  stroke: #000;
+  stroke-width: 3px;
+}
+
+.fill {
+  fill: #fff;
 }
